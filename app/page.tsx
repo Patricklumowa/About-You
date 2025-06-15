@@ -3,20 +3,20 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-// Fixed lyrics data with proper timing
+// Simplified lyrics data with consistent timing
 const lyricsData = [
-  { type: "verse", text: "I know a place", duration: 3000 },
-  { type: "verse", text: "When silence speaks", duration: 7000 },
-  { type: "verse", text: "I find your shadow", duration: 3400 },
-  { type: "verse", text: "In memories deep", duration: 3200 },
-  { type: "verse", text: "The echoes linger", duration: 3000 },
-  { type: "verse", text: "Of what we were", duration: 3400 },
-  { type: "verse", text: "Before the distance", duration: 3200 },
-  { type: "verse", text: "Made hearts unsure", duration: 3600 },
-  { type: "chorus", text: "Do you remember?", duration: 4000 },
-  { type: "chorus", text: "The way we used to be", duration: 4200 },
-  { type: "chorus", text: "Do you remember?", duration: 4000 },
-  { type: "chorus", text: "When you belonged to me", duration: 4500 },
+  { text: "In whispered moments", type: "verse", duration: 2 },
+  { text: "When silence speaks", type: "verse", duration: 2.5 },
+  { text: "I find your shadow", type: "verse", duration: 2.8 },
+  { text: "In memories deep", type: "verse", duration: 2.5 },
+  { text: "The echoes linger", type: "verse", duration: 2.5 },
+  { text: "Of what we were", type: "verse", duration: 2.8 },
+  { text: "Before the distance", type: "verse", duration: 2.5 },
+  { text: "Made hearts unsure", type: "verse", duration: 3.0 },
+  { text: "Do you remember?", type: "chorus", duration: 3.2 },
+  { text: "The way we used to be", type: "chorus", duration: 3.5 },
+  { text: "Do you remember?", type: "chorus", duration: 3.2 },
+  { text: "When you belonged to me", type: "chorus", duration: 3.8 },
 ]
 
 interface Particle {
@@ -88,14 +88,13 @@ export default function FixedLyricsExperience() {
     let isAnimating = true
 
     const resizeCanvas = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2) // Limit DPR for performance
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
       canvas.width = window.innerWidth * dpr
       canvas.height = window.innerHeight * dpr
       canvas.style.width = window.innerWidth + "px"
       canvas.style.height = window.innerHeight + "px"
       ctx.scale(dpr, dpr)
 
-      // Reinitialize particles on resize
       initializeParticles()
     }
 
@@ -180,7 +179,7 @@ export default function FixedLyricsExperience() {
         const timeOpacity = 0.7 + Math.sin(timeRef.current * 1.5 + particle.phase) * 0.3
         const currentOpacity = particle.baseOpacity * lifeRatio * timeOpacity
 
-        if (currentOpacity < 0.01) continue // Skip nearly invisible particles
+        if (currentOpacity < 0.01) continue
 
         ctx.save()
         ctx.globalAlpha = currentOpacity
@@ -241,32 +240,43 @@ export default function FixedLyricsExperience() {
     }
   }, [initializeParticles])
 
-  // Fixed lyrics progression with proper cleanup
+  // Simplified lyrics progression system
   useEffect(() => {
     if (!hasStarted || isComplete) return
 
-    const progressLyrics = () => {
-      const nextIndex = currentLine + 1
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
 
-      if (nextIndex >= lyricsData.length) {
+    const scheduleNextLyric = (index: number) => {
+      if (index >= lyricsData.length) {
         setIsComplete(true)
         return
       }
 
-      const duration = lyricsData[nextIndex]?.duration || 3000
+      const currentLyric = lyricsData[index]
+      const displayDuration = currentLyric.duration * 1000 // Convert to milliseconds
 
       timeoutRef.current = setTimeout(() => {
-        setCurrentLine(nextIndex)
-      }, duration)
+        const nextIndex = index + 1
+        if (nextIndex >= lyricsData.length) {
+          setIsComplete(true)
+        } else {
+          setCurrentLine(nextIndex)
+          scheduleNextLyric(nextIndex)
+        }
+      }, displayDuration)
     }
 
+    // Start the sequence
     if (currentLine === -1) {
-      // Start with first lyric
+      // Initial delay before first lyric
       timeoutRef.current = setTimeout(() => {
         setCurrentLine(0)
-      }, 1000)
-    } else {
-      progressLyrics()
+        scheduleNextLyric(0) // Schedule the next lyric after the first one
+      }, 800)
     }
 
     return () => {
@@ -275,7 +285,7 @@ export default function FixedLyricsExperience() {
         timeoutRef.current = null
       }
     }
-  }, [hasStarted, currentLine, isComplete])
+  }, [hasStarted, isComplete])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -295,6 +305,16 @@ export default function FixedLyricsExperience() {
     setIsComplete(false)
   }, [])
 
+  const resetExperience = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    setHasStarted(false)
+    setCurrentLine(-1)
+    setIsComplete(false)
+  }, [])
+
   return (
     <div className="min-h-screen relative overflow-hidden bg-midnight select-none">
       {/* Optimized Aurora Canvas */}
@@ -309,7 +329,7 @@ export default function FixedLyricsExperience() {
         <motion.div
           initial={{ opacity: 0, y: -40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 2.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 1.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-16 md:mb-24"
         >
           <motion.h1
@@ -337,7 +357,7 @@ export default function FixedLyricsExperience() {
             className="text-lg sm:text-xl md:text-2xl text-blue-200/70 font-extralight tracking-[0.3em] md:tracking-[0.4em]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 2 }}
+            transition={{ delay: 0.8, duration: 1.2 }}
           >
             The 1975
           </motion.p>
@@ -352,27 +372,24 @@ export default function FixedLyricsExperience() {
                   key={currentLine}
                   initial={{
                     opacity: 0,
-                    y: 60,
-                    scale: 0.8,
-                    filter: "blur(20px)",
-                    rotateX: 15,
+                    y: 30,
+                    scale: 0.9,
+                    filter: "blur(10px)",
                   }}
                   animate={{
                     opacity: 1,
                     y: 0,
                     scale: 1,
                     filter: "blur(0px)",
-                    rotateX: 0,
                   }}
                   exit={{
                     opacity: 0,
-                    y: -60,
-                    scale: 0.8,
-                    filter: "blur(20px)",
-                    rotateX: -15,
+                    y: -30,
+                    scale: 0.9,
+                    filter: "blur(10px)",
                   }}
                   transition={{
-                    duration: 1.8,
+                    duration: 0.6,
                     ease: [0.25, 0.46, 0.45, 0.94],
                   }}
                   className={`${
@@ -448,18 +465,18 @@ export default function FixedLyricsExperience() {
           </div>
         </div>
 
-        {/* Single Button */}
+        {/* Control Buttons */}
         <AnimatePresence>
           {!hasStarted && (
             <motion.div
-              initial={{ opacity: 0, y: 80 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0, y: -40 }}
-              transition={{ delay: 3, duration: 1.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ delay: 2, duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <motion.button
                 onClick={startExperience}
-                className="px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-blue-900/15 to-purple-900/15 backdrop-blur-md border border-blue-300/15 text-blue-100 font-extralight text-base sm:text-lg rounded-full hover:from-blue-800/25 hover:to-purple-800/25 transition-all duration-700 shadow-lg hover:shadow-blue-500/15 relative overflow-hidden button-glow"
+                className="px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-blue-900/15 to-purple-900/15 backdrop-blur-md border border-blue-300/15 text-blue-100 font-extralight text-base sm:text-lg rounded-full hover:from-blue-800/25 hover:to-purple-800/25 transition-all duration-500 shadow-lg hover:shadow-blue-500/15 relative overflow-hidden button-glow"
                 whileHover={{
                   scale: 1.03,
                   y: -3,
@@ -478,6 +495,26 @@ export default function FixedLyricsExperience() {
                   }}
                 />
                 <span className="relative z-10 tracking-wider">Do you remember?</span>
+              </motion.button>
+            </motion.div>
+          )}
+
+          {isComplete && (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <motion.button
+                onClick={resetExperience}
+                className="px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-purple-900/15 to-blue-900/15 backdrop-blur-md border border-purple-300/15 text-purple-100 font-extralight text-base sm:text-lg rounded-full hover:from-purple-800/25 hover:to-blue-800/25 transition-all duration-500 shadow-lg hover:shadow-purple-500/15 relative overflow-hidden button-glow"
+                whileHover={{
+                  scale: 1.03,
+                  y: -3,
+                }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <span className="relative z-10 tracking-wider">Experience Again</span>
               </motion.button>
             </motion.div>
           )}
