@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 
 // Fixed lyrics data with proper timing
 const lyricsData = [
-  { type: "verse", text: "In whispered moments", duration: 3000 },
-  { type: "verse", text: "When silence speaks", duration: 3000 },
+  { type: "verse", text: "I know a place", duration: 3000 },
+  { type: "verse", text: "When silence speaks", duration: 7000 },
   { type: "verse", text: "I find your shadow", duration: 3400 },
   { type: "verse", text: "In memories deep", duration: 3200 },
   { type: "verse", text: "The echoes linger", duration: 3000 },
