@@ -5,18 +5,22 @@ import { motion, AnimatePresence } from "framer-motion"
 
 // Simplified lyrics data with consistent timing
 const lyricsData = [
-  { text: "I", type: "verse", duration: 4.5 },
-  { text: "Know A Place", type: "verse", duration: 5 },
-  { text: "It Somewhere I Go find", type: "verse", duration: 2.8 },
-  { text: "In memories deep", type: "verse", duration: 2.5 },
-  { text: "The echoes linger", type: "verse", duration: 2.5 },
-  { text: "Of what we were", type: "verse", duration: 2.8 },
-  { text: "Before the distance", type: "verse", duration: 2.5 },
-  { text: "Made hearts unsure", type: "verse", duration: 3.0 },
-  { text: "Do you remember?", type: "chorus", duration: 3.2 },
-  { text: "The way we used to be", type: "chorus", duration: 3.5 },
-  { text: "Do you remember?", type: "chorus", duration: 3.2 },
-  { text: "When you belonged to me", type: "chorus", duration: 3.8 },
+  { text: "I🌟", type: "verse", duration: 4.1 },
+  { text: "Know A Place🏞️", type: "verse", duration: 4.8 },
+  { text: "It's Somewhere I Go", type: "verse", duration: 2.3 },
+  { text: "When I Need To", type: "verse", duration: 1.8 },
+  { text: "Remember Your", type: "verse", duration: 2.2 },
+  { text: "Face❤️", type: "verse", duration: 3.8 },
+  { text: "We Get Married💍", type: "verse", duration: 5 },
+  { text: "In Our Heads", type: "verse", duration: 5.6 },
+  { text: "Something To Do", type: "verse", duration: 1.6 },
+  { text: "While We Try", type: "verse", duration: 1.7 },
+  { text: "To Recall", type: "verse", duration: 1.3 },
+  { text: "How We Met🐧🌷🐧", type: "verse", duration: 5 },
+  { text: "Do You Think I have Forgotten?", type: "chorus", duration: 5 },
+  { text: "Do You Think I have Forgotten?", type: "chorus", duration: 5 },
+  { text: "Do You Think I have Forgotten?", type: "chorus", duration: 4.5 },
+  { text: "About You❤️", type: "chorus", duration: 7.8 },
 ]
 
 interface Particle {
