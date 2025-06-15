@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion"
 
 // Simplified lyrics data with consistent timing
 const lyricsData = [
-  { text: "In whispered moments", type: "verse", duration: 2 },
-  { text: "When silence speaks", type: "verse", duration: 2.5 },
-  { text: "I find your shadow", type: "verse", duration: 2.8 },
+  { text: "I", type: "verse", duration: 4.5 },
+  { text: "Know A Place", type: "verse", duration: 5 },
+  { text: "It Somewhere I Go find", type: "verse", duration: 2.8 },
   { text: "In memories deep", type: "verse", duration: 2.5 },
   { text: "The echoes linger", type: "verse", duration: 2.5 },
   { text: "Of what we were", type: "verse", duration: 2.8 },
